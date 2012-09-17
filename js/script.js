@@ -145,10 +145,6 @@ traeGaleriaPlayer = function(idGaleria){
 
 
 traeGalerias = function(){
-
-
-
-    
     var params= {
         action:'get_galleries',
         page:1
@@ -204,7 +200,7 @@ traeGalerias = function(){
     });
 
 } 
-descargaGaleria = function (idGaleria){
+/*descargaGaleria = function (idGaleria){
     if (navigator.network.connection.type == "wifi" ){
     var params= {
         action:'get_galeryImages',
@@ -246,8 +242,8 @@ descargaGaleria = function (idGaleria){
 }else {
      alert("Esta operación esta solo disponible con Wi-FI");
 }
-}
-
+}*/
+/*
 descargaWallpaper = function  (url){
 if (navigator.network.connection.type == "wifi" ){
   alert("Este proceso puede tardar");
@@ -288,7 +284,7 @@ if (navigator.network.connection.type == "wifi" ){
 else{
     alert("Esta operación esta solo disponible con Wi-FI");
 }
-}
+}*/
 
 traeWallpapers = function (){
     $.mobile.showPageLoadingMsg();
@@ -410,16 +406,36 @@ if(botonera.reproduce){
 
 /*-------------------------INIT---------*/
 
-$(document).bind('pageinit',function(){
 
-if (!mostroSplash){
+
+
+
+
+
+
+
+
+
+$(function(){
+
+/*if (!;mostroSplash){
 $("#splash_img_full").show().attr("src","img/sony.png").width($(window).width()).height($(window).height())
 mostroSplash = true;
-}
+}*/
 
-  document.addEventListener("deviceready", onDeviceReady, false);
+//  document.addEventListener("deviceready", onDeviceReady, false);
   
-  
+$("#panel_lateral ul li").mouseover(function(){
+
+$(this).removeClass("puntahide");
+$(this).addClass("punta");
+})  
+
+$("#panel_lateral ul li").mouseout(function(){
+
+$(this).removeClass("punta");
+$(this).addClass("puntahide");
+})  
 
     traePost();
 
@@ -475,7 +491,7 @@ function init(){
         iniciado = true;
         iniciaPanel()
     }
-    setTimeout("$('#splash_img_full').fadeOut()",5000)
+    //setTimeout("$('#splash_img_full').fadeOut()",5000)
 }
 
 
