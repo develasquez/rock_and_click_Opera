@@ -59,7 +59,7 @@ td { vertical-align: top; }
 #tv{
  
   background-repeat: no-repeat;
-  
+  background-size: 100% 100%;
   background-color: #000;
   height: auto;
   min-height: 100%;
@@ -293,8 +293,8 @@ li a {
 .iframeVideo{
 
   display: inline-block;
-  height: 100px;
-  width: 200px;
+  height: 25%;
+  width: 25%;
   margin-right: 3em;
 }
 .youtube{
@@ -371,6 +371,16 @@ li a {
   font-family: 'Headland One';
   font-weight:bold;
   text-shadow: -0.1em -0.07em #333;
+}
+.botonera{
+  text-align: center;
+
+}
+.icono{
+  display: inline-block;
+  height: 15%;
+  margin: 15% 5%;
+  width: 15%;
 }
 
 /* ==|== media queries ====================================================== */

@@ -22,25 +22,27 @@ if(unicode <58 && unicode > 48){
   for (i=0;i<$("iframe").length;i++){
       $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
   }
-
   var thisWidth = $($("iframe")[unicode - 49]).width()
-
-    
-    $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1")).addClass("videoFull")
+  $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1")).addClass("videoFull")
 }
 switch (unicode){
 
 case 412: 
-      alert("Atras");
+      botonera.back(this)
       break;
 case 413: 
-      alert("Stop");
+      abotonera.play(this)
+      for (i=0;i<$("iframe").length;i++){
+      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
+  }
       break;
 case 415:
-      alert("Play");
+      botonera.play(this)
+      //alert("Play");
       break;
 case 473: 
-      alert("Adelante");
+      botonera.next(this);
+      //alert("Adelante");
       break;
 }
 }
@@ -51,10 +53,15 @@ case 473:
                 <img id="logo_rac" class="no-seleccionable" src="img/logo_rac.png">
                 <ul>
                     <li class="gradient"><a href="#" id="menuGaleria">Galería&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-                    <li class="gradient"><a href="#">Wallpapers</a></li>
+                    <!-- <li class="gradient"><a href="#">Wallpapers</a></li> -->
                     <li class="gradient"><a href="#" id="menuVideo">Videos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                     <!-- <li class="gradient"><a href="#">Contacto&nbsp;&nbsp;&nbsp;</a></li> -->
                 </ul>
+              <div class="botonera">
+                <a href="#" onClick="botonera.back(this)"><img src="img/atras.png" class="icono" ></a>
+                <a href="#" onClick="botonera.play(this)"><img  src="img/pausa.png" class="icono play" ></a>
+                <a href="#" onClick="botonera.next(this)"><img src="img/siguiente.png" class="icono" ></a>
+              </div>
             </div>
             <div id="div_text">
               <a href="#" id="expandText"> <img id="expandText" src="img/down.png" alt=""></a>
@@ -62,12 +69,13 @@ case 473:
             </div>
             <img src="img/logo_sony.png" id="logo_sony">
             <div id="videos" >
-              <a href="#" id="closeVideo"> <img class="close" src="img/close.png" alt="">
+              <a href="#" id="closeVideo"> <img class="close" src="img/close.png" alt=""></a>
               <div id="videosInside">
                 <div id="contenedorVideos">
 
 
                 </div>
+              </div>
             </div>
              <div id="galerias" >
               <a href="#" id="closeGalerias"> 

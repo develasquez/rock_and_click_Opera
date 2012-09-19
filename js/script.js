@@ -42,8 +42,9 @@ traePost = function (){
 
         jsonPosts = data;
         nombreGaleria = jsonPosts.posts[0].slug
-        
+   
         traeGaleria(imageList[jsonPosts.posts[0].id])
+
         nombreGaleria = jsonPosts.posts[0].id;
 
         text = jsonPosts.posts[0].title +  "| Rock and Click - Radio Futuro 88.9 "
@@ -85,12 +86,13 @@ traeGaleria = function(idGaleria){
     }
 
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
-      
-        jsonGaleria = JSON.parse(data);
-        iT = jsonGaleria.gallery.length;
-   $("#tv").css("background-image","url("+jsonGaleria.gallery[0].image+")")
-        iA=1;
-        cambiaImagen();
+    
+        jsonGaleriaPlayer = JSON.parse(data);
+        iTPlayer = jsonGaleriaPlayer.gallery.length;
+        $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[0].image+")")
+        iAPlayer=1;
+        //cambiaImagen();
+        botonera.play()
 
 
     });
@@ -188,7 +190,7 @@ $(".bloqueGaleria").mouseover(function(){
 
 
 traeWallpapers = function (){
-    $.mobile.showPageLoadingMsg();
+   
     $.getJSON('http://rockandclick.cl/wallpapers/?json=1',function(data){
   
         jsonWallpapers = data;
@@ -202,8 +204,8 @@ traeWallpapers = function (){
                 .attr("src",obj.images.thumbnail.url)
                 .addClass("wall_img_principal")
                 .width("90%")
-                $("#liHD").text("HD - " + obj.images.full.width + " X " + obj.images.full.height)
-                $("#liSD").text("SD - " + obj.images.medium.width + " X " + obj.images.medium.height)                       
+               // $("#liHD").text("HD - " + obj.images.full.width + " X " + obj.images.full.height)
+               // $("#liSD").text("SD - " + obj.images.medium.width + " X " + obj.images.medium.height)                       
             })
             .addClass("img_wallpaper")
             .attr("src", e.images.thumbnail.url ).data("data",e))
@@ -213,7 +215,7 @@ traeWallpapers = function (){
         $("#lista_walpapers").append($(newWall));
 
 
-        $.mobile.hidePageLoadingMsg();
+    
 
     });
 
@@ -233,14 +235,22 @@ traeWallpapers = function (){
 
 botonera={
 reproduce:true,
-play:function(){
+play:function(This){
+    mainGalery=false; 
+ if(botonera.reproduce == false){
 botonera.reproduce = true
 botonera.cambiaImagen()
+$(".play").attr("src","img/pausa.png")
+ }else{
+    botonera.reproduce = false
+    $(".play").attr("src","img/play.png")
+
+ }
 },
 pause:function(){
-botonera.reproduce = false
 },
 back:function(){
+    mainGalery=false;
 try{
         if(iAPlayer >= iTPlayer)
         {
@@ -249,14 +259,16 @@ try{
             iAPlayer--;
         }
 
-        $("#post_img_principal2").attr("src",jsonGaleriaPlayer.gallery[iAPlayer].image)
-        ajustaImagen();
+         $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[iAPlayer].image+")")
+        //ajustaImagen();
       }catch(e){
  
     }
 },
 next:function(){
+    mainGalery=false;
 try{
+
         if(iAPlayer >= iTPlayer)
         {
             iAPlayer=0;
@@ -264,8 +276,8 @@ try{
             iAPlayer++;
         }
 
-        $("#post_img_principal2").attr("src",jsonGaleriaPlayer.gallery[iAPlayer].image)
-        ajustaImagen();
+        $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[iAPlayer].image+")")
+        //ajustaImagen();
       }catch(e){
  
     }
@@ -282,7 +294,6 @@ if(botonera.reproduce){
             
             iAPlayer++;
         }
-
         $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[iAPlayer].image+")")
 
       }catch(e){
@@ -417,16 +428,17 @@ function init(){
 
 
 function cambiaImagen(){
+
 if(mainGalery == true){
     try{
-        if(iA >= iT)
+        if(iAPlayer >= iTPlayer)
         {
-            iA=0;
+            iAPlayer=0;
         }else{
-            iA++;
+            iAPlayer++;
         }
 
-          $("#tv").css("background-image","url("+jsonGaleria.gallery[iA].image+")")
+          $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[iAPlayer].image+")")
       }catch(e){
  
     }
