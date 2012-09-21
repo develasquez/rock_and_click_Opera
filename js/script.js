@@ -17,22 +17,7 @@ var twitterUrl = "";
 var faceUrl = "";
 var networkState = "";
 var nombreGaleria = "";
-var imageList={
-    "1":1,
-    "27":2,
-    "25":3,
-    "33":5,
-    "57":6,
-    "59":7,
-    "62":8,
-    "67":9,
-    "90":15,
-    "93":16,
-    "114":20,
-    "123":22,
-    "125":23
-
-};
+var imageList={};
 
 
 var iniciado = false;
@@ -51,19 +36,20 @@ buscaId = function(titulo){
 }
 traePost = function (){
     
-    setTimeout("init()",500);
+  // setTimeout("init()",500);
 
     $.getJSON('http://rockandclick.cl?json=get_recent_posts',function(data){
+
         jsonPosts = data;
         nombreGaleria = jsonPosts.posts[0].slug
-        traeGaleria(imageList[jsonPosts.posts[0].id])
-        galeriaSeleccionada = jsonPosts.posts[0].id;
+        alert(imageList[jsonPosts.posts[0].id])
+        traeGaleria(1)//imageList[jsonPosts.posts[0].id])
+        nombreGaleria = jsonPosts.posts[0].id;
         url = jsonPosts.posts[0].url
         faceUrl = "http://www.facebook.com/sharer/sharer.php?u=" + url;
         text = jsonPosts.posts[0].title +  "| Rock and Click - Radio Futuro 88.9 "
         url = 'https://twitter.com/intent/tweet?text='+ text +'&url=' + url
-        $("#div_text").html("<br><br>");
-        $("#div_text").append(jsonPosts.posts[0].content);
+        $("#p_text").append(jsonPosts.posts[0].content);
         twitterUrl = url;
         $("#twitter_href").click(function(){
              document.location.href=twitterUrl;
@@ -103,22 +89,27 @@ compartir = function (){
 }
 
 traeGaleria = function(idGaleria){
-      $.mobile.showPageLoadingMsg();
+    alert(idGaleria);
+      
     var params= {
         action:'get_galeryImages',
         gallery:idGaleria
     }
+
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
+        
         jsonGaleria = JSON.parse(data);
         iT = jsonGaleria.gallery.length;
-   
-        $("#post_img_principal").attr("src",jsonGaleria.gallery[0].image)
-        $(".post_img_carusel_rigth").attr("src",jsonGaleria.gallery[1].thumb)
-        $(".post_img_carusel_center").attr("src",jsonGaleria.gallery[2].thumb)
-        $(".post_img_carusel_left").attr("src",jsonGaleria.gallery[3].thumb)
-        iA=3;
-        cambiaImagen();
-          $.mobile.hidePageLoadingMsg();
+   $("#tv").css("background-image","url("+jsonGaleria.gallery[0].image+")")
+     //   $("#post_img_principal").attr("src",jsonGaleria.gallery[0].image)
+     //   $(".post_img_carusel_rigth").attr("src",jsonGaleria.gallery[1].thumb)
+     //   $(".post_img_carusel_center").attr("src",jsonGaleria.gallery[2].thumb)
+     //   $(".post_img_carusel_left").attr("src",jsonGaleria.gallery[3].thumb)
+     //   iA=3;
+     //   cambiaImagen();
+    //    $.mobile.hidePageLoadingMsg();
+
+
     });
 
 }
@@ -410,7 +401,7 @@ if(botonera.reproduce){
 
 
 
-
+//file://localhost/mydata
 
 
 
@@ -424,7 +415,10 @@ mostroSplash = true;
 }*/
 
 //  document.addEventListener("deviceready", onDeviceReady, false);
-  
+
+
+
+$("#panel_lateral").height($(document).height());
 $("#panel_lateral ul li").mouseover(function(){
 
 $(this).removeClass("puntahide");
@@ -436,8 +430,17 @@ $("#panel_lateral ul li").mouseout(function(){
 $(this).removeClass("punta");
 $(this).addClass("puntahide");
 })  
+     var params = {
+    
+    metodo : "getListaImagenes"
+    }
+  $.post('http://106.187.55.9/RockNclick/assets/www/wsRac.php',params,function(data){
+    
+        imageList = JSON.parse(data);
 
-    traePost();
+         traePost();
+    });
+    
 
     $("body").on("pagebeforeload", function(){
         iniciaPanel();

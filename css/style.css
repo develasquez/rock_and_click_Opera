@@ -77,10 +77,12 @@ width:20em;
   height: 1024px;
   left:0;
   max-width: 25%;
+/*   opacity:0.7;
+  filter:alpha(opacity=70); /* For IE8 and earlier */
   position: relative;
   top:0;
   width: 25%;
-  z-index: 200;
+  z-index: 10;
 }
 
 #panel_lateral ul li:first-child{
@@ -102,7 +104,7 @@ width:20em;
   margin-left: -40px;
   min-width: 200px;
   text-shadow: -0.1em -0.07em #333;
-  width: 105%;
+  width: 103%;
 }
 
 
@@ -120,6 +122,7 @@ width:20em;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fd731a', endColorstr='#fc6600',GradientType=0 ); /* IE6-8 */
   border-top: solid 1px #a0a0a0;
   border-bottom:   solid 1px #a0a0a0;
+  z-index: 200;
 }
 
 
@@ -131,12 +134,12 @@ content: "";
 color: white;
 position: relative;
 bottom: 0px;
-left: 40%;
+left: 61%;
 padding: .4em 2em .4em 0;
 background-size: 1.9em;
 background-repeat: no-repeat;
 background-position-y: 3px;
-
+z-index: 100;
 
 }
 .puntahide:after{
@@ -163,8 +166,42 @@ li a {
   margin: 2em 25% 2em 25%;
 }
 
+#div_text{
 
+  background-color: transparent;
+  background-image: url("../img/Fondo.png");
+  border: solid 1px #000 ;
+  border-radius: 1em 1em 0 0;
+  bottom: 0px;
+  height: auto;
+  padding: 0 2em 0 2em;
+  position: absolute;
+  left:25%; 
+ /* opacity:0.3;
+  filter:alpha(opacity=40); /* For IE8 and earlier */
+  width: 50%;
+  z-index: 300;
+}
 
+#div_text p{
+  margin:30px 40px;
+  font-weight:bold;
+  color:#fff;
+  font-size:1.1em; 
+}
+
+#expandText{
+
+  position: relative;
+  left: 95%;
+  top: 1em;
+  z-index: 350;
+}
+#expandText img{
+
+  height:2.5em;
+  width: 2.5em;
+}
 /* ==|== media queries ====================================================== */
 
 @media only screen and (min-width: 800px) {
