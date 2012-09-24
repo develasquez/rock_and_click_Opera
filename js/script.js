@@ -42,7 +42,7 @@ traePost = function (){
 
         jsonPosts = data;
         nombreGaleria = jsonPosts.posts[0].slug
-        alert(imageList[jsonPosts.posts[0].id])
+        //alert(imageList[jsonPosts.posts[0].id])
         traeGaleria(1)//imageList[jsonPosts.posts[0].id])
         nombreGaleria = jsonPosts.posts[0].id;
         url = jsonPosts.posts[0].url
