@@ -20,13 +20,13 @@ var unicode=e.keyCode? e.keyCode : e.charCode
 if(unicode <58 && unicode > 48){
 
   for (i=0;i<$("iframe").length;i++){
-      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0"))
+      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
   }
 
   var thisWidth = $($("iframe")[unicode - 49]).width()
 
     
-    $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1"))
+    $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1")).addClass("videoFull")
 }
 switch (unicode){
 

@@ -303,6 +303,13 @@ li a {
 
 }
 
+.videoFull{
+  position:absolute;
+  top: 10%;
+  left:10%;
+  height:80%;
+  width:80%;
+}
 
 
 
