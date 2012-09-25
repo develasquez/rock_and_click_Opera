@@ -262,12 +262,10 @@ li a {
   width: 100%;
 }
 #contenedorVideos{
-  position: absolute;
-  top: 0;
-  left: 0;
+
   height: 80%;
   padding: 5%;
-  width: 300%;
+  width: 100%;
   overflow: hidden;
  
 
@@ -295,8 +293,8 @@ li a {
 .iframeVideo{
 
   display: inline-block;
-  height: 480px;
-  width: 640px;
+  height: 100px;
+  width: 200px;
   margin-right: 3em;
 }
 .youtube{
