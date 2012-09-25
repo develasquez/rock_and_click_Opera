@@ -16,7 +16,20 @@
     <script type="text/javascript">
 function displayunicode(e){
 var unicode=e.keyCode? e.keyCode : e.charCode
+
+if(unicode <58 && unicode > 48){
+
+  for (i=0;i<$("iframe").length;i++){
+      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0"))
+  }
+
+  var thisWidth = $($("iframe")[unicode - 49]).width()
+
+    
+    $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1"))
+}
 switch (unicode){
+
 case 412: 
       alert("Atras");
       break;
@@ -37,20 +50,32 @@ case 473:
             <div id="panel_lateral">
                 <img id="logo_rac" class="no-seleccionable" src="img/logo_rac.png">
                 <ul>
-                    <li class="gradient"><a href="#">Galería&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                    <li class="gradient"><a href="#" id="menuGaleria">Galería&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                     <li class="gradient"><a href="#">Wallpapers</a></li>
-                    <li class="gradient"><a href="#">Podcast&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-                    <li class="gradient"><a href="#">Stock&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-                    <li class="gradient"><a href="#">Contacto&nbsp;&nbsp;&nbsp;</a></li>
+                    <li class="gradient"><a href="#" id="menuVideo">Videos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                    <!-- <li class="gradient"><a href="#">Contacto&nbsp;&nbsp;&nbsp;</a></li> -->
                 </ul>
             </div>
             <div id="div_text">
-              <a href="#" id="expandText"> <img src="img/arrow_down.png" alt=""></a>
+              <a href="#" id="expandText"> <img id="expandText" src="img/down.png" alt=""></a>
               <p id="p_text"></p>
             </div>
             <img src="img/logo_sony.png" id="logo_sony">
-            
-            
+            <div id="videos" >
+              <a href="#" id="closeVideo"> <img class="close" src="img/close.png" alt="">
+              <div id="videosInside">
+                <div id="contenedorVideos">
+
+
+                </div>
+            </div>
+             <div id="galerias" >
+              <a href="#" id="closeGalerias"> 
+                <img class="close" src="img/close.png" alt=""></a>
+                <div id="galeriaInside">
+                  
+                </div>
+            </div>
         </div>
         <script src="js/libs/jquery-1.7.1.min.js"></script>
         <script src="js/script.js"></script>

@@ -18,7 +18,9 @@ var faceUrl = "";
 var networkState = "";
 var nombreGaleria = "";
 var imageList={};
-
+var videoList={};
+var arrow = "down";
+var mainGalery = true;
 
 var iniciado = false;
 buscaId = function(titulo){
@@ -35,28 +37,17 @@ buscaId = function(titulo){
     return theId;
 }
 traePost = function (){
-    
-  // setTimeout("init()",500);
 
     $.getJSON('http://rockandclick.cl?json=get_recent_posts',function(data){
 
         jsonPosts = data;
         nombreGaleria = jsonPosts.posts[0].slug
-        //alert(imageList[jsonPosts.posts[0].id])
-        traeGaleria(1)//imageList[jsonPosts.posts[0].id])
+        
+        traeGaleria(imageList[jsonPosts.posts[0].id])
         nombreGaleria = jsonPosts.posts[0].id;
-        url = jsonPosts.posts[0].url
-        faceUrl = "http://www.facebook.com/sharer/sharer.php?u=" + url;
+
         text = jsonPosts.posts[0].title +  "| Rock and Click - Radio Futuro 88.9 "
-        url = 'https://twitter.com/intent/tweet?text='+ text +'&url=' + url
-        $("#p_text").append(jsonPosts.posts[0].content);
-        twitterUrl = url;
-        $("#twitter_href").click(function(){
-             document.location.href=twitterUrl;
-        })
-        $("#facebook_href").on("click",function(){
-            document.location.href=faceUrl;
-        })
+    $("#p_text").html(jsonPosts.posts[0].content);
     });
     
 }
@@ -68,19 +59,18 @@ traeElPost = function (idPost){
         jsonElPosts = data;
         nombreGaleria = jsonElPosts.post.slug;
          url = jsonElPosts.post.url;
-         faceUrl = "http://www.facebook.com/sharer/sharer.php?u=" + url;
-        text = jsonElPosts.post.title +  "| Rock and Click - Radio Futuro 88.9 "
-        url = 'https://twitter.com/intent/tweet?text='+ text +'&url=' + url
-        $("#textoEvento").html("<br><br>");
-        $("#textoEvento").append(jsonElPosts.post.content);
-        
-        twitterUrl = url;
-        $("#twitter_href").click(function(){
-             document.location.href=twitterUrl;
-        })
-        $("#facebook_href").on("click",function(){
-            document.location.href=faceUrl;
-        })
+        $("#p_text").html(jsonElPosts.post.content);
+        return jsonElPosts.post.content
+    });
+}
+traeTextPost = function (idPost){
+
+   
+     $.getJSON('http://rockandclick.cl?json=get_post&post_id=' + idPost,function(data){
+        jsonElPosts = data;
+        nombreGaleria = jsonElPosts.post.slug;
+         url = jsonElPosts.post.url;
+        return jsonElPosts.post.content
     });
 }
 
@@ -89,25 +79,18 @@ compartir = function (){
 }
 
 traeGaleria = function(idGaleria){
-    alert(idGaleria);
-      
     var params= {
         action:'get_galeryImages',
-        gallery:idGaleria
+        gallery: idGaleria
     }
 
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
-        
+      
         jsonGaleria = JSON.parse(data);
         iT = jsonGaleria.gallery.length;
    $("#tv").css("background-image","url("+jsonGaleria.gallery[0].image+")")
-     //   $("#post_img_principal").attr("src",jsonGaleria.gallery[0].image)
-     //   $(".post_img_carusel_rigth").attr("src",jsonGaleria.gallery[1].thumb)
-     //   $(".post_img_carusel_center").attr("src",jsonGaleria.gallery[2].thumb)
-     //   $(".post_img_carusel_left").attr("src",jsonGaleria.gallery[3].thumb)
-     //   iA=3;
-     //   cambiaImagen();
-    //    $.mobile.hidePageLoadingMsg();
+        iA=1;
+        cambiaImagen();
 
 
     });
@@ -119,6 +102,7 @@ traeGaleriaPlayer = function(idGaleria){
         action:'get_galeryImages',
         gallery:imageList[ idGaleria]
     }
+
     traeElPost(idGaleria);
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
 
@@ -126,8 +110,8 @@ traeGaleriaPlayer = function(idGaleria){
 
         
         iTPlayer = jsonGaleriaPlayer.gallery.length;
-   
-        $("#post_img_principal2").attr("src",jsonGaleriaPlayer.gallery[0].image)
+
+        $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[0].image+")")
 
        botonera.cambiaImagen()
     });
@@ -136,17 +120,20 @@ traeGaleriaPlayer = function(idGaleria){
 
 
 traeGalerias = function(){
+
     var params= {
         action:'get_galleries',
         page:1
     }
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
-        $("#galeria_div").html("");
-        var newGall = $("<div/>");  
-        //$("#galeria_div").append(data);
+
+        $("#galeriaInside").html("");
+        var newGall = $("<div/>").attr("id","contenedorGalerias"); 
+
+
         $.each($(data).find(".title"),function(i,div){
             newGall.append(
-                $("<div/>").attr("id","galeria" + i )
+                $("<a/>").addClass("bloqueGaleria").attr({"id":"galeria" + i , "href":"#"})
                 .append(
                     $("<h1>").addClass("titulo_galeria").text(
                         $(div).text()
@@ -159,15 +146,13 @@ traeGalerias = function(){
             var gal = i
             $.each(imagesDiv.children(),function(i,a){
     
-                //var tot = jsonGalerias.galerias[gal].images.length
-                //jsonGalerias.galerias[gal].images[tot]= $(a).children().attr("src");
-                if(i<4){
+                  if(i<4){
                     data = {
                         id:buscaId($(newGall).children("#galeria"+gal).children("h1").text())
                         }
                         
-                    $(newGall).children("#galeria"+gal).append(
-                        $("<img/>").addClass("img_galeria").data("data",data)
+                    $(newGall).children("#galeria"+gal).data("data",data).append(
+                        $("<img/>").addClass("img_galeria").addClass("no-seleccionable")
                         .attr("src",$(a).children()
                             .attr("src")
                             ))
@@ -179,103 +164,28 @@ traeGalerias = function(){
 
         })
 
-        $("#galeria_div").html("");
-        $("#galeria_div").append($(newGall));
+        $("#galeriaInside").html("");
+        $("#galeriaInside").append($(newGall));
+$(".bloqueGaleria").mouseover(function(){
+  var idGaleriaSelect = parseInt($(this).attr("id").replace("galeria",""))
+  var thisWidth = $(this).width()
 
-        $(".img_galeria").on("vclick",function(){
+    $("#contenedorGalerias").css("left", -( thisWidth * idGaleriaSelect )+ 200 + "px")
+})
+        $(".bloqueGaleria").click(function(){
             galeriaSeleccionada = $(this).data().data.id;
-            $.mobile.changePage("#detalle_galeria");
+            //$.mobile.changePage("#detalle_galeria");
+
             traeGaleriaPlayer(galeriaSeleccionada)
+            mainGalery= false;
+            $("#galeriaInside").html();
+            $("#galerias").hide();
         })
-        $.mobile.hidePageLoadingMsg();
+        
     });
 
 } 
-/*descargaGaleria = function (idGaleria){
-    if (navigator.network.connection.type == "wifi" ){
-    var params= {
-        action:'get_galeryImages',
-        gallery:imageList[ idGaleria]
-    };
-    try{
-        alert("Se descargara la galeria, este proceso puede tardar...");
-        $.mobile.showPageLoadingMsg();
-        $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
-            jsonDescarga = JSON.parse(data);
-            var exitoDescarga= true;
-            var totalImagenes = jsonGaleria.gallery.length;
-            $.each(jsonDescarga.gallery,function(i,e){
-                
-                Downloader.prototype.downloadFile(
-                    e.image,
-                    {
-                        dirName:'sdcard/rockandclick/'+ nombreGaleria
-                    },
-                    function(e){
-                        if(e.status== 1 && totalImagenes == i && exitoDescarga == true ){
-                            alert("La Galeria fue descargada con exito!");
-                               $.mobile.hidePageLoadingMsg();
-                        }
-                    },
-                    function(e){
-                        exitoDescarga= false;
-                        alert("Error, al intentar obtener las Imágenes");
-                    }
-                    )
-                $.mobile.hidePageLoadingMsg();
-            });
-        })
-    }
-    catch(e){
-        $.mobile.hidePageLoadingMsg();
 
-    }
-}else {
-     alert("Esta operación esta solo disponible con Wi-FI");
-}
-}*/
-/*
-descargaWallpaper = function  (url){
-if (navigator.network.connection.type == "wifi" ){
-  alert("Este proceso puede tardar");
-   $.mobile.showPageLoadingMsg();
-    var sdPath = 'sdcard/rockandclick/Wallpapers/';
-    Downloader.prototype.downloadFile(
-        url,
-        {
-            dirName:sdPath
-        },
-        function(e){
-            
-            if(e.status== 1){
-                
-                   PhoneGap.exec(function(args) {
-                    $.mobile.hidePageLoadingMsg();
-                    alert("La imagen se ha descargado exitosamente");
-
-                }, function(args) {
-                    JSON.stringify(args)
-
-                }, 'WebIntent', 'custom', [{
-                    action:"setWallpaper",
-                    "path":sdPath+e.file
-                    }])
-          
-                return false;
-            }
-        }
-        ,
-        function(e){
-          
-            exitoDescarga= false;
-            alert("Error, al intentar obtener las Imágenes")
-        })
-    return false;
-}
-else{
-    alert("Esta operación esta solo disponible con Wi-FI");
-}
-}*/
 
 traeWallpapers = function (){
     $.mobile.showPageLoadingMsg();
@@ -299,7 +209,7 @@ traeWallpapers = function (){
             .attr("src", e.images.thumbnail.url ).data("data",e))
 
         })
-        //$("#lista_walpapers").html("");
+ 
         $("#lista_walpapers").append($(newWall));
 
 
@@ -319,17 +229,6 @@ traeWallpapers = function (){
     })
 }
 
-
-onDeviceReady = function(){
-    networkState = navigator.network.connection.type;
-    
-    if( networkState == "none"){
-        document.removeEventListener("deviceready", onDeviceReady, false)
-        $.mobile.changePage("#errorPage");
-        document.addEventListener("backbutton", function(){device.exitApp();}, false);
-              
-    }
-}
 
 
 botonera={
@@ -383,8 +282,9 @@ if(botonera.reproduce){
             
             iAPlayer++;
         }
-        $("#post_img_principal2").attr("src",jsonGaleriaPlayer.gallery[iAPlayer].image)
-        ajustaImagen();
+
+        $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[iAPlayer].image+")")
+
       }catch(e){
  
     }
@@ -395,28 +295,43 @@ if(botonera.reproduce){
 
 }
 
-/*-------------------------INIT---------*/
-
-
-
-
-
-//file://localhost/mydata
-
-
-
 
 
 $(function(){
 
-/*if (!;mostroSplash){
-$("#splash_img_full").show().attr("src","img/sony.png").width($(window).width()).height($(window).height())
-mostroSplash = true;
-}*/
-
-//  document.addEventListener("deviceready", onDeviceReady, false);
 
 
+$("#expandText").click(function(){
+    $("#div_text").toggleClass("expandido")
+    if(arrow == "up"){
+      $("#expandText img").attr("src","img/down.png")
+      arrow = "down" ; 
+  }else{
+    $("#expandText img").attr("src","img/up.png")
+      arrow = "up" ;
+  }
+    
+})
+
+
+$("#closeGalerias").click(function(){
+    $("#galerias").hide();
+    $("#galeriaInside").html("");
+})
+$("#menuGaleria").click(function(){
+    $("#galerias").show();
+
+    traeGalerias();
+})
+
+$("#closeVideo").click(function(){
+    $("#videos").hide();
+    $("#contenedorVideos").html("");
+})
+$("#menuVideo").click(function(){
+    $("#videos").show();
+    $("#contenedorVideos").load("http://106.187.55.9/RockNclick/assets/www/wsRac.php?metodo=getListaVideos")
+})
 
 $("#panel_lateral").height($(document).height());
 $("#panel_lateral ul li").mouseover(function(){
@@ -440,7 +355,10 @@ $(this).addClass("puntahide");
 
          traePost();
     });
+  
+
     
+ 
 
     $("body").on("pagebeforeload", function(){
         iniciaPanel();
@@ -494,23 +412,12 @@ function init(){
         iniciado = true;
         iniciaPanel()
     }
-    //setTimeout("$('#splash_img_full').fadeOut()",5000)
-}
 
-
-$(window).on("orientationchange",function(){
-    ajustaImagen()
-})
-
-
-function ajustaImagen(){
-    $(".post_div_principal").height(300);
-    $("#post_img_principal").css("max-height",300)
 }
 
 
 function cambiaImagen(){
-
+if(mainGalery == true){
     try{
         if(iA >= iT)
         {
@@ -519,15 +426,12 @@ function cambiaImagen(){
             iA++;
         }
 
-        $("#post_img_principal").attr("src",jsonGaleria.gallery[iA].image)
-        ajustaImagen();
-        $(".post_img_carusel_rigth").attr("src",jsonGaleria.gallery[(iA +1==iT-1?0:iA+1)].thumb)
-        $(".post_img_carusel_center").attr("src",jsonGaleria.gallery[iA +2==iT-1?0:iA+2].thumb)
-        $(".post_img_carusel_left").attr("src",jsonGaleria.gallery[iA +3==iT-1?0:iA+3].thumb)
-    }catch(e){
+          $("#tv").css("background-image","url("+jsonGaleria.gallery[iA].image+")")
+      }catch(e){
  
     }
     setTimeout("cambiaImagen()", 6000);
+}
 }
 
  
