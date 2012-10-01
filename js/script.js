@@ -21,8 +21,37 @@ var imageList={};
 var videoList={};
 var arrow = "down";
 var mainGalery = true;
-
 var iniciado = false;
+function displayunicode(e){
+var unicode=e.keyCode? e.keyCode : e.charCode
+
+if(unicode <58 && unicode > 48){
+
+  for (i=0;i<$("iframe").length;i++){
+      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
+  }
+  var thisWidth = $($("iframe")[unicode - 49]).width()
+  $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1")).addClass("videoFull")
+}
+switch (unicode){
+
+case 412: 
+      botonera.back(this)
+      break;
+case 413: 
+      abotonera.play(this)
+      for (i=0;i<$("iframe").length;i++){
+      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
+  }
+      break;
+case 415:
+      botonera.play(this)
+      break;
+case 473: 
+      botonera.next(this);
+     break;
+}
+}
 buscaId = function(titulo){
     var theId = 0 ;
     I=0;
@@ -38,7 +67,7 @@ buscaId = function(titulo){
 }
 traePost = function (){
 
-    $.getJSON('http://rockandclick.cl?json=get_recent_posts',function(data){
+    $.getJSON('http://rockandclick.cl?json=1',function(data){
 
         jsonPosts = data;
         nombreGaleria = jsonPosts.posts[0].slug
@@ -48,7 +77,8 @@ traePost = function (){
         nombreGaleria = jsonPosts.posts[0].id;
 
         text = jsonPosts.posts[0].title +  "| Rock and Click - Radio Futuro 88.9 "
-    $("#p_text").html(jsonPosts.posts[0].content);
+    $("#p_text").append($("<h2>").html(jsonPosts.posts[0].title))
+                .append($("<h3>").html(jsonPosts.posts[0].content));
     });
     
 }
@@ -60,7 +90,7 @@ traeElPost = function (idPost){
         jsonElPosts = data;
         nombreGaleria = jsonElPosts.post.slug;
          url = jsonElPosts.post.url;
-        $("#p_text").html(jsonElPosts.post.content);
+        $("#p_text").html($("<h1>").text(jsonElPosts.post.title).html() + "<br>" +  jsonElPosts.post.content);
         return jsonElPosts.post.content
     });
 }
@@ -91,10 +121,7 @@ traeGaleria = function(idGaleria){
         iTPlayer = jsonGaleriaPlayer.gallery.length;
         $("#tv").css("background-image","url("+jsonGaleriaPlayer.gallery[0].image+")")
         iAPlayer=1;
-        //cambiaImagen();
         botonera.play()
-
-
     });
 
 }
@@ -122,22 +149,18 @@ traeGaleriaPlayer = function(idGaleria){
 
 
 traeGalerias = function(){
-
+    $("#galeriaInside").html("");
     var params= {
         action:'get_galleries',
-        page:1
+        page:2
     }
     $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
-
-        $("#galeriaInside").html("");
-        var newGall = $("<div/>").attr("id","contenedorGalerias"); 
-
-
+        var newGall = $("<div/>").attr("id","contenedorGalerias").addClass("contenidoGalerias"); 
         $.each($(data).find(".title"),function(i,div){
             newGall.append(
                 $("<a/>").addClass("bloqueGaleria").attr({"id":"galeria" + i , "href":"#"})
                 .append(
-                    $("<h1>").addClass("titulo_galeria").text(
+                    $("<h2>").addClass("titulo_galeria").text(
                         $(div).text()
                         )
                     )
@@ -147,47 +170,42 @@ traeGalerias = function(){
             var imagesDiv = $(div);
             var gal = i
             $.each(imagesDiv.children(),function(i,a){
-    
-                  if(i<4){
+                if(i<4){
                     data = {
-                        id:buscaId($(newGall).children("#galeria"+gal).children("h1").text())
-                        }
-                        
+                        id:buscaId($(newGall).children("#galeria"+gal).children("h2").text())
+                        }           
                     $(newGall).children("#galeria"+gal).data("data",data).append(
                         $("<img/>").addClass("img_galeria").addClass("no-seleccionable")
                         .attr("src",$(a).children()
                             .attr("src")
                             ))
                 }
-
             })
-
-
-
         })
-
-        $("#galeriaInside").html("");
         $("#galeriaInside").append($(newGall));
-$(".bloqueGaleria").mouseover(function(){
-  var idGaleriaSelect = parseInt($(this).attr("id").replace("galeria",""))
-  var thisWidth = $(this).width()
-
-    $("#contenedorGalerias").css("left", -( thisWidth * idGaleriaSelect )+ 200 + "px")
-})
+        $(".bloqueGaleria").mouseover(function(){
+            var idGaleriaSelect = parseInt($(this).attr("id").replace("galeria",""))
+            var thisWidth = $(this).width()
+            $("#contenedorGalerias").css("left", -( thisWidth * idGaleriaSelect )+ 200 + "px")
+        })
         $(".bloqueGaleria").click(function(){
             galeriaSeleccionada = $(this).data().data.id;
-            //$.mobile.changePage("#detalle_galeria");
-
             traeGaleriaPlayer(galeriaSeleccionada)
             mainGalery= false;
             $("#galeriaInside").html();
             $("#galerias").hide();
         })
-        
     });
-
 } 
+traeStock = function(){
+    var params= {
+        action:'get_stock'
+    }
+    $.get('http://rockandclick.cl/wp-admin/admin-ajax.php',params,function(data){
+        debugger;
 
+    })
+    }
 
 traeWallpapers = function (){
    
@@ -310,8 +328,6 @@ if(botonera.reproduce){
 
 $(function(){
 
-
-
 $("#expandText").click(function(){
     $("#div_text").toggleClass("expandido")
     if(arrow == "up"){
@@ -323,7 +339,6 @@ $("#expandText").click(function(){
   }
     
 })
-
 
 $("#closeGalerias").click(function(){
     $("#galerias").hide();
@@ -344,7 +359,7 @@ $("#menuVideo").click(function(){
     $("#contenedorVideos").load("http://106.187.55.9/RockNclick/assets/www/wsRac.php?metodo=getListaVideos")
 })
 
-$("#panel_lateral").height($(document).height());
+$("#panel_lateral").height($(window).innerHeight())
 $("#panel_lateral ul li").mouseover(function(){
 
 $(this).removeClass("puntahide");

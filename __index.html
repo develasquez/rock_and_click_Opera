@@ -1,3 +1,7 @@
+<?php 
+ Access-Control-Allow-Origin: *
+
+ ?>
 <!doctype html>
 
 <html  lang="en">
@@ -13,48 +17,15 @@
            }
         </style>
     <![endif]-->
-    <script type="text/javascript">
-function displayunicode(e){
-var unicode=e.keyCode? e.keyCode : e.charCode
 
-if(unicode <58 && unicode > 48){
-
-  for (i=0;i<$("iframe").length;i++){
-      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
-  }
-  var thisWidth = $($("iframe")[unicode - 49]).width()
-  $($("iframe")[unicode - 49]).attr("src",$($("iframe")[unicode - 49]).attr("src").replace("autoplay=0","autoplay=1")).addClass("videoFull")
-}
-switch (unicode){
-
-case 412: 
-      botonera.back(this)
-      break;
-case 413: 
-      abotonera.play(this)
-      for (i=0;i<$("iframe").length;i++){
-      $($("iframe")[i]).attr("src",$($("iframe")[i]).attr("src").replace("autoplay=1","autoplay=0")).removeClass("videoFull")
-  }
-      break;
-case 415:
-      botonera.play(this)
-      //alert("Play");
-      break;
-case 473: 
-      botonera.next(this);
-      //alert("Adelante");
-      break;
-}
-}
-</script>
     <body onkeyup="displayunicode(event);">
         <div id="tv">
             <div id="panel_lateral">
                 <img id="logo_rac" class="no-seleccionable" src="img/logo_rac.png">
                 <ul>
-                    <li class="gradient"><a href="#" id="menuGaleria">Galería&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                    <li class="gradient"><a href="#" id="menuGaleria">Galería</a></li>
                     <!-- <li class="gradient"><a href="#">Wallpapers</a></li> -->
-                    <li class="gradient"><a href="#" id="menuVideo">Videos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                    <li class="gradient"><a href="#" id="menuVideo">Videos&nbsp;</a></li>
                     <!-- <li class="gradient"><a href="#">Contacto&nbsp;&nbsp;&nbsp;</a></li> -->
                 </ul>
               <div class="botonera">

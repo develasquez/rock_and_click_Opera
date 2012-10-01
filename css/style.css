@@ -83,7 +83,7 @@ width:20em;
   filter:alpha(opacity=70); /* For IE8 and earlier */
   position: relative;
   top:0;
-  width: 25%;
+  width: 20%;
   z-index: 10;
 }
 
@@ -136,7 +136,7 @@ content: "";
 color: white;
 position: relative;
 bottom: 0px;
-left: 61%;
+left: 70%;
 padding: .4em 2em .4em 0;
 background-size: 1.9em;
 background-repeat: no-repeat;
@@ -310,12 +310,6 @@ li a {
   height:80%;
   width:80%;
 }
-
-
-
-
-
-
 #galerias{
   border: solid 2px #a0a0a0;
   border-radius: 1em;
@@ -347,17 +341,17 @@ li a {
   top: 0;
 
 }
+.contenidoGalerias{
+  margin-top: 5%;
+}
 .bloqueGaleria{
  display: inline-block;
   width: 19em;
   height: 60%;
+  margin-right: 2em;
   min-height: 60%;
   max-height: 60%;
 }
-
-
-
-
 .laGaleria{
 
  
@@ -365,9 +359,14 @@ li a {
   
   width: 100%;
 }
+.img_galeria{
+  width: 100%;
+  margin-bottom: 2em;
+  border: solid 1px #fff;
+}
 .titulo_galeria{
   color: #fff;
-  font-size: 2em;
+  /*font-size: 2em;*/
   font-family: 'Headland One';
   font-weight:bold;
   text-shadow: -0.1em -0.07em #333;
@@ -378,9 +377,9 @@ li a {
 }
 .icono{
   display: inline-block;
-  height: 15%;
+  height: 8%;
   margin: 15% 5%;
-  width: 15%;
+  width: 8%;
 }
 
 /* ==|== media queries ====================================================== */
@@ -389,18 +388,21 @@ li a {
 
 @media screen and (min-width: 1920px) { /* Full-HD styles */
 .punta:after{
-left: 61%;
+left: 69%;
 }
 
  }
 @media screen and (min-width: 1280px) and (max-width: 1920px) { /* HD-Ready  styles */ 
 .punta:after{
-left: 61%;
+left: 69%;
 }
 }
 @media screen and (max-width: 1280px) { /* smaller than HD-Ready styles */ 
 .punta:after{
-left: 41%;
+left: 51%;
+}
+#panel_lateral ul li {
+  width: 107%;
 }
 }
 
