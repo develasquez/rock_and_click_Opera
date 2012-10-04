@@ -77,12 +77,9 @@ traePost = function (){
         nombreGaleria = jsonPosts.posts[0].id;
 
         text = jsonPosts.posts[0].title +  "| Rock and Click - Radio Futuro 88.9 "
-<<<<<<< HEAD
+
     $("#p_text").append($("<h2>").html(jsonPosts.posts[0].title))
                 .append($("<h3>").html(jsonPosts.posts[0].content));
-=======
-    $("#p_text").html($("<h2>").text(jsonPosts.posts[0].title).html() +"<br>" +jsonPosts.posts[0].content);
->>>>>>> Comitt
     });
     
 }
@@ -94,12 +91,10 @@ traeElPost = function (idPost){
         jsonElPosts = data;
         nombreGaleria = jsonElPosts.post.slug;
          url = jsonElPosts.post.url;
-<<<<<<< HEAD
-        $("#p_text").html($("<h1>").text(jsonElPosts.post.title).html() + "<br>" +  jsonElPosts.post.content);
-=======
+
 
         $("#p_text").html($("<h2>").text(jsonElPosts.post.title).html() +"<br>" + jsonElPosts.post.content);
->>>>>>> Comitt
+
         return jsonElPosts.post.content
     });
 }
@@ -182,12 +177,11 @@ traeGalerias = function(){
                 if(i<4){
                     data = {
                         id:buscaId($(newGall).children("#galeria"+gal).children("h2").text())
-<<<<<<< HEAD
+
                         }           
-=======
-                        }
                         
->>>>>>> Comitt
+                        
+
                     $(newGall).children("#galeria"+gal).data("data",data).append(
                         $("<img/>").addClass("img_galeria").addClass("no-seleccionable")
                         .attr("src",$(a).children()

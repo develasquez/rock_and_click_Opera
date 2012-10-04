@@ -1,16 +1,23 @@
 /* HTML5 ✰ Boilerplate
  * ==|== normalize ==========================================================
  */
+a {
+   outline: 0;
+}
+:focus, :active {
+outline: none;
+border: none;
+}
 @font-face {font-family: 'Headland One'; src: url('../font/HeadlandOne.ttf');}
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
 audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
 audio:not([controls]) { display: none; }
 [hidden] { display: none; }::selection{text-shadow:0 0 20px #017ecd,1px 1px 1px #808080}
-a:link { color: #fff; text-decoration: none}
-a:visited { color: #fff; text-decoration: none} 
-a:active { color: #fff; text-decoration: none}
-a:hover { color: #fff; text-decoration: none }
-a:hover { color: #fff; text-decoration: none }
+a:link { color: #fff; text-decoration: none;outline: none;}
+a:visited { color: #fff; text-decoration: none;outline: none;} 
+a:active { color: #fff; text-decoration: none;outline: none;}
+a:hover { color: #fff; text-decoration: none;outline: none; }
+a:hover { color: #fff; text-decoration: none ;outline: none;}
 html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin:0; padding:0;height: 100% ;overflow: hidden; }
 body { margin:0; padding:0;  font-size: 13px; line-height: 1.231; height: 100% ;overflow: hidden;}
 body, button, input, select, textarea { font-family: sans-serif; color: #222; }
